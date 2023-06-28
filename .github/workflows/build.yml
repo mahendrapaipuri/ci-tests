@@ -37,7 +37,6 @@ jobs:
       - name: Test matrix variables
         run: |
           set -eux
-          python -m pip install .
 
           echo "${{ matrix.name }}"
           echo "${{ matrix.extension }}"
