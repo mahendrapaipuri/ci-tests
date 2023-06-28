@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash -l {0}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # extension:
+        #   - logout
+        #   - theme-toggler
+        #   - topbar-text
+        include:
+          - extension: logout
+            name: logout
+          - extension: theme-toggler
+            name: theme_toggler
+          - extension: topbar-text
+            name: topbar_text
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test matrix variables
+        run: |
+          set -eux
+          python -m pip install .
+
+          echo "${{ matrix.name }}"
+          echo "${{ matrix.extension }}"
