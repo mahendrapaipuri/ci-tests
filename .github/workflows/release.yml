@@ -1,0 +1,24 @@
+name: Release
+
+on:
+  push:
+    # Run workflow on new tags
+    tags:
+      - "v.*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test echo
+        run: |
+          ls -la .
+          echo "Test"
