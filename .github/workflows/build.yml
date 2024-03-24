@@ -15,28 +15,42 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # extension:
-        #   - logout
-        #   - theme-toggler
-        #   - topbar-text
-        include:
-          - extension: logout
-            name: logout
-          - extension: theme-toggler
-            name: theme_toggler
-          - extension: topbar-text
-            name: topbar_text
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     # extension:
+    #     #   - logout
+    #     #   - theme-toggler
+    #     #   - topbar-text
+    #     include:
+    #       - extension: logout
+    #         name: logout
+    #       - extension: theme-toggler
+    #         name: theme_toggler
+    #       - extension: topbar-text
+    #         name: topbar_text
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Test matrix variables
-        run: |
-          set -eux
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.21.x
 
-          echo "${{ matrix.name }}"
-          echo "${{ matrix.extension }}"
+      - name: Install nfpm
+        run: go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+
+      # Build RPM and DEB packages
+      - name: Build deb and rpm packages
+        run: |
+          
+          # Add go bins to PATH
+          # Ref: https://github.com/actions/setup-go/issues/27
+          export PATH=${PATH}:`go env GOPATH`/bin
+          echo $PATH
+          which nfpm
+          go env
+
+          nfpm --version
