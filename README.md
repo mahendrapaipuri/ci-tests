@@ -1,4 +1,5 @@
 # ci-tests
+![Coverage](https://img.shields.io/badge/Coverage-60.2%25-yellow)
 Rapid testing of GitHub Actions
 
 ## Screencasts
