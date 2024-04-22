@@ -26,8 +26,8 @@ jobs:
   docker:
     uses: ./.github/workflows/step_docker.yml
     with:
-      registry: ${{ inputs.docker_hub_registry }}
-      organization: ${{ inputs.docker_hub_organization }}
+      registry: "${{ inputs.docker_hub_registry }}"
+      organization: "${{ inputs.docker_hub_organization }}"
     secrets:  
       login: ${{ secrets.DOCKER_HUB_LOGIN }}
       password: ${{ secrets.DOCKER_HUB_PASSWORD }}
