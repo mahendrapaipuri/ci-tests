@@ -7,11 +7,11 @@ on:
       registry:
         type: string
         description: Registry
-        required: true
+        # required: true
       organization:
         type: string
         description: Organization
-        required: true
+        # required: true
     secrets:
       login:
         required: true

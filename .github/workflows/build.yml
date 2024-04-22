@@ -6,12 +6,12 @@ on:
       docker_hub_registry:
         type: string
         description: DockerHub registry
-        required: true
+        # required: true
         default: docker.io
       docker_hub_organization:
         type: string
         description: DockerHub organization
-        required: true
+        # required: true
         default: mahendrapaipuri
   push:
     branches:
