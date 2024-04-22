@@ -39,6 +39,7 @@ jobs:
 
       - name: Print vars
         run: |
+            echo "New test"
             echo "${{ steps.target_branch.outputs.name }}"
             echo "${{ inputs.registry }}/${{ inputs.organization }}"
             echo "${{ secrets.password }}"
