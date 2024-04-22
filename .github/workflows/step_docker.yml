@@ -44,3 +44,4 @@ jobs:
             echo "${{ inputs.registry }}/${{ inputs.organization }}"
             echo "${{ secrets.password }}"
             echo "${{ secrets.login }}"
+        shell: bash
