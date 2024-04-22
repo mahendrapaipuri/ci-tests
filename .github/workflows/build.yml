@@ -6,12 +6,12 @@ on:
       docker_hub_registry:
         type: string
         description: DockerHub registry
-        required: true
+        # required: true
         default: docker.io
       docker_hub_organization:
         type: string
         description: DockerHub organization
-        required: true
+        # required: true
         default: mahendrapaipuri
   push:
     branches:
@@ -20,16 +20,16 @@ on:
     branches:
       - main
 
-defaults:
-  run:
-    shell: bash -l {0}
+# defaults:
+#   run:
+#     shell: bash -l {0}
 
 jobs:
   docker:
     uses: ./.github/workflows/step_docker.yml
     with:
-      registry: ${{ github.event.inputs.docker_hub_registry || 'docker.io' }}
-      organization: ${{ github.event.inputs.docker_hub_organization || 'mahendrapaipuri' }}
+      registry: ${{ inputs.docker_hub_registry || 'docker.io' }}
+      organization: ${{ inputs.docker_hub_organization || 'mahendrapaipuri' }}
     secrets:  
       login: ${{ secrets.DOCKER_HUB_LOGIN }}
       password: ${{ secrets.DOCKER_HUB_PASSWORD }}
