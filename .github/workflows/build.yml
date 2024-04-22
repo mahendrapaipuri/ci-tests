@@ -1,6 +1,16 @@
 name: Build
 
 on:
+  workflow_dispatch:
+    inputs:
+      docker_hub_registry:
+        type: string
+        description: DockerHub registry
+        default: docker.io
+      docker_hub_organization:
+        type: string
+        description: DockerHub organization
+        default: mahendrapaipuri
   push:
     branches:
       - main
@@ -13,46 +23,39 @@ defaults:
     shell: bash -l {0}
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     # extension:
-    #     #   - logout
-    #     #   - theme-toggler
-    #     #   - topbar-text
-    #     include:
-    #       - extension: logout
-    #         name: logout
-    #       - extension: theme-toggler
-    #         name: theme_toggler
-    #       - extension: topbar-text
-    #         name: topbar_text
+  docker:
+    uses: ./.github/workflows/step_docker.yml
+    with:
+      registry: ${{ inputs.docker_hub_registry }}
+      organization: ${{ inputs.docker_hub_organization }}
+    secrets:  
+      login: ${{ secrets.DOCKER_HUB_LOGIN }}
+      password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  # build:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       # extension:
+  #       #   - logout
+  #       #   - theme-toggler
+  #       #   - topbar-text
+  #       include:
+  #         - extension: logout
+  #           name: logout
+  #         - extension: theme-toggler
+  #           name: theme_toggler
+  #         - extension: topbar-text
+  #           name: topbar_text
 
-      - name: Install Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.21.x
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Install nfpm
-        run: |
-          go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
-          go install github.com/mahendrapaipuri/gobadge@latest
+  #     - name: Test matrix variables
+  #       run: |
+  #         set -eux
 
-      # Build RPM and DEB packages
-      - name: Build deb and rpm packages
-        run: |
-          
-          # Add go bins to PATH
-          # Ref: https://github.com/actions/setup-go/issues/27
-          export PATH=${PATH}:`go env GOPATH`/bin
-          echo $PATH
-          which nfpm
-          go env
-
-          nfpm --version
+  #         echo "${{ matrix.name }}"
+  #         echo "${{ matrix.extension }}"
