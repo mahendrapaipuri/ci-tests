@@ -39,7 +39,7 @@ jobs:
 
       - name: Print vars
         run: |
-            echo ${{ steps.target_branch.outputs.name }}
-            echo ${{ inputs.registry }}/${{ inputs.organization }}
-            echo ${{ secrets.password }}
-            echo ${{ secrets.login }}
+            echo "${{ steps.target_branch.outputs.name }}"
+            echo "${{ inputs.registry }}/${{ inputs.organization }}"
+            echo "${{ secrets.password }}"
+            echo "${{ secrets.login }}"
