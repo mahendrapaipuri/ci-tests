@@ -29,6 +29,9 @@ jobs:
       - name: Get target branch
         id: target_branch
         run: |
+          which clang
+          command -v clang
+          clang --version
           if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
             echo "name=$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
           elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
