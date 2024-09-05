@@ -33,6 +33,7 @@ jobs:
           command -v clang
           clang --version
           echo $PATH
+          clang -v 2>&1 | grep version | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+"
           if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
             echo "name=$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
           elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
