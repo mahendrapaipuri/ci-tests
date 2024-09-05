@@ -34,6 +34,10 @@ jobs:
           clang --version
           echo $PATH
           clang -v 2>&1 | grep version | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+"
+          chmod +x install_clang.sh
+          ./install_clang.sh
+          echo "Second"
+          ./install_clang.sh
           if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
             echo "name=$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
           elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
