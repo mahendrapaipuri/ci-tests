@@ -22,7 +22,7 @@ if [ -x "$(command -v clang)" ]; then
     clang_major_version=$(clang -v 2>&1 | grep version | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+" | cut -d "." -f1)
     if (( ${clang_major_version} >= 18 )); then
         echo "clang >=18 already installed. Skipping installation...."
-        create_symlinks()
+        create_symlinks
         exit 0
     fi
 fi
