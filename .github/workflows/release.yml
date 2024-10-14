@@ -18,6 +18,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Test llvm
+        run: |
+          which clang
+          ls -la /usr/bin/
+          ls -la /usr/local/bin
+          ls -la /usr/lib
+
       - name: Test echo
         run: |
           ls -la .
