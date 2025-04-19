@@ -24,7 +24,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Get tags
+        run: git fetch --tags origin
+
+      - name: Check tags
+        run: git tag --sort=committerdate
 
       - name: Install chrome
         run: |
