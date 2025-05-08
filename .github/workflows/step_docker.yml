@@ -7,11 +7,11 @@ on:
       registry:
         type: string
         description: Registry
-        required: true
+        # required: true
       organization:
         type: string
         description: Organization
-        required: true
+        # required: true
     secrets:
       login:
         required: true
@@ -62,7 +62,9 @@ jobs:
 
       - name: Print vars
         run: |
+            echo "New test"
             echo "${{ steps.target_branch.outputs.name }}"
             echo "${{ inputs.registry }}/${{ inputs.organization }}"
             echo "${{ secrets.password }}"
             echo "${{ secrets.login }}"
+        shell: bash
