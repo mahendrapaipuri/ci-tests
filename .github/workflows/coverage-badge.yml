@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
-  pull-requests: write
-  contents: write
+  contents: read
 
 jobs:
   test:
@@ -20,31 +20,17 @@ jobs:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
       
-      - name: Setup go
-        uses: actions/setup-go@v4
-
-      - name: Go Coverage Badge  # Pass the `coverage.out` output to this action
-        uses: tj-actions/coverage-badge-go@v2
-        with:
-          filename: coverage.out
-
-      - name: Verify Changed files
-        uses: tj-actions/verify-changed-files@v16
-        id: verify-changed-files
-        with:
-          files: README.md
-
-      - name: Commit changes
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
+      - name: Process 
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add README.md
-          git commit -m "chore: Updated coverage badge."
+          echo "Processing..."
+          exit 1
 
-      - name: Push changes
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+  discord:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: Final step
+        if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+        run: |
+          echo "Running"
