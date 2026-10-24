@@ -58,7 +58,10 @@ jobs:
       max-parallel: 2
       matrix:
         release: ${{ fromJSON(needs.prepare.outputs.releases) }}
+    env:
+      VERSION: ${{ matrix.release.version }}
+      SOURCE: ${{ matrix.release.source }}
     steps:
     - name: Run test
       run: |
-        echo "building for ${{ matrix.release.version }} ${{ matrix.release.source }}"
+        echo "building for $VERSION $SOURCE"
