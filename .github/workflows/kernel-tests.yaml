@@ -1,0 +1,31 @@
+name: "Workflow with matrix from output"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    name: Prepare output
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.kernel_versions.outputs.versions }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Get latest kernel releases 
+      id: kernel_versions
+      shell: python
+      run: python get_kernel_releases.py >> $GITHUB_OUTPUT
+  
+  tests:
+    name: Run tests
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        version: ${{ fromJSON(needs.prepare.outputs.versions) }}
+    steps:
+    - name: Run test
+      run: |
+        echo "building for ${{ matrix.version }}"
