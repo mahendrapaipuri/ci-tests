@@ -2,6 +2,8 @@ name: "Workflow with matrix from output"
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
   prepare:
@@ -15,7 +17,34 @@ jobs:
     - name: Get latest kernel releases 
       id: kernel_versions
       shell: python
-      run: python get_kernel_releases.py >> $GITHUB_OUTPUT
+      run: |
+        #!/usr/bin/env python3
+        
+        import os
+        import json
+        import urllib.request
+
+        # Get GITHUB_OUTPUT env var to write the version URL strings
+        GITHUB_OUTPUT = os.getenv('GITHUB_OUTPUT')
+        
+        try:
+            # Fetch the JSON data
+            with urllib.request.urlopen('https://www.kernel.org/releases.json') as response:
+                data = json.loads(response.read())
+            
+            # Extract and print all source URLs
+            urls = []
+            for release in data['releases']:
+                for source in release.get('source', []):
+                    urls.append(source)
+            
+            # Output all URLs
+            with open(GITHUB_OUTPUT, 'w') as f:
+                json.dump(urls, f)
+            print(f"Kernel releases fetched successfully: {urls}")
+        except Exception as e:
+            print(f"Unexpected error fetching kernel releases: {e}")
+            exit(1)
   
   tests:
     name: Run tests
