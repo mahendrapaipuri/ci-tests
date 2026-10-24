@@ -23,7 +23,7 @@ jobs:
         import os
         import json
         import urllib.request
-
+        
         # Get GITHUB_OUTPUT env var to write the version URL strings
         GITHUB_OUTPUT = os.getenv('GITHUB_OUTPUT')
         
@@ -31,17 +31,21 @@ jobs:
             # Fetch the JSON data
             with urllib.request.urlopen('https://www.kernel.org/releases.json') as response:
                 data = json.loads(response.read())
-            
+        
             # Extract and print all source URLs
-            urls = []
+            releases = []
             for release in data['releases']:
-                for source in release.get('source', []):
-                    urls.append(source)
-            
+                source = release.get('source', '')
+                version = release.get('version', '')
+                if source and version:
+                    releases.append({'version': version ,'source': source})
+        
             # Output all URLs
             with open(GITHUB_OUTPUT, 'w') as f:
-                json.dump(urls, f)
-            print(f"Kernel releases fetched successfully: {urls}")
+                json.dump(releases, f)
+            print(f"Kernel releases fetched successfully")
+            for release in releases:
+                print(f"Version: {release['version']}; Source: {release['source']}")
         except Exception as e:
             print(f"Unexpected error fetching kernel releases: {e}")
             exit(1)
