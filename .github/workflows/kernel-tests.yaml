@@ -10,12 +10,12 @@ jobs:
     name: Prepare output
     runs-on: ubuntu-latest
     outputs:
-      versions: ${{ steps.kernel_versions.outputs.versions }}
+      releases: ${{ steps.kernel_releases.outputs.releases }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Get latest kernel releases 
-      id: kernel_versions
+      id: kernel_releases
       shell: python
       run: |
         #!/usr/bin/env python3
@@ -42,7 +42,7 @@ jobs:
         
             # Output all URLs
             with open(GITHUB_OUTPUT, 'w') as f:
-                json.dump(releases, f)
+                f.write(f"releases={json.dumps(releases)}")
             print(f"Kernel releases fetched successfully")
             for release in releases:
                 print(f"Version: {release['version']}; Source: {release['source']}")
@@ -57,8 +57,8 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        version: ${{ fromJSON(needs.prepare.outputs.versions) }}
+        release: ${{ fromJSON(needs.prepare.outputs.releases) }}
     steps:
     - name: Run test
       run: |
-        echo "building for ${{ matrix.version }}"
+        echo "building for ${{ matrix.release }}"
