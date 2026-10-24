@@ -61,4 +61,4 @@ jobs:
     steps:
     - name: Run test
       run: |
-        echo "building for ${{ matrix.release }}"
+        echo "building for ${{ matrix.release.version }} ${{ matrix.release.source }}"
