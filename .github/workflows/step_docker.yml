@@ -23,6 +23,12 @@ jobs:
     name: docker
     runs-on: ubuntu-latest
     steps:
+      - name: Explain why this job ran
+        uses: octo-org/action-name@main
+        with:
+          entrypoint: /bin/echo
+          args: The ${{ github.event_name }} event triggered this step.
+          
       - name: Checkout
         uses: actions/checkout@v4
 
